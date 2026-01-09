@@ -43,6 +43,23 @@ CREATE TABLE taxi_brousse (
     type_voiture_id INT NOT NULL REFERENCES type_voiture(id)
 );
 
+
+CREATE OR REPLACE VIEW view_voiture AS
+SELECT 
+    tb.id AS taxi_id,
+    tb.immatriculation,
+    tv.libelle AS type_voiture,
+    tv.nbr_places,
+    tv.poids_max_bagage,
+    tv.conso_carburant,
+    tv.tarif_bagage,
+    tb.cooperative_id
+FROM 
+    taxi_brousse tb
+JOIN 
+    type_voiture tv ON tb.type_voiture_id = tv.id;
+
+
 -- =========================
 -- TRAJET
 -- =========================

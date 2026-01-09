@@ -45,7 +45,7 @@
             <div class="card">
                 <h3>📅 Réservations</h3>
                 <p>Gérer les réservations des passagers.</p>
-                <a href="${pageContext.request.contextPath}/reservation">Accéder →</a>
+                <a href="${pageContext.request.contextPath}/rechercheVoiture">Accéder →</a>
             </div>
 
             <div class="card">

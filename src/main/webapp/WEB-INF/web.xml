@@ -27,4 +27,13 @@
         <url-pattern>/taxi/*</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>RechercheVoitureServlet</servlet-name>
+        <servlet-class>mg.coop.servlet.taxi.RechercheVoitureServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>RechercheVoitureServlet</servlet-name>
+        <url-pattern>/rechercheVoiture/*</url-pattern>
+    </servlet-mapping>
+
 </web-app>

@@ -1,4 +1,8 @@
+mg/coop/servlet/personne/PersonneServlet.class
+mg/coop/servlet/taxi/RechercheVoitureServlet.class
+mg/coop/dao/TaxiTrajetDAO.class
 mg/coop/model/TaxiTrajet.class
+mg/coop/dao/PersonneDAO.class
 mg/coop/servlet/taxi/TaxiServlet.class
 mg/coop/model/Personne.class
 mg/coop/model/Trajet.class
