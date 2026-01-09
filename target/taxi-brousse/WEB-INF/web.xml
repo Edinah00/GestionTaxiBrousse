@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="https://jakarta.ee/xml/ns/jakartaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="https://jakarta.ee/xml/ns/jakartaee
+                             https://jakarta.ee/xml/ns/jakartaee/web-app_6_0.xsd"
+         version="6.0">
+
+    <display-name>Gestion Taxi Brousse</display-name>
+
+    <!-- Page d'accueil -->
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+
+    <!-- Encoding UTF-8 -->
+    <!-- <filter>
+        <filter-name>encodingFilter</filter-name>
+        <filter-class>jakarta.servlet.Filter</filter-class>
+    </filter> -->
+
+    <servlet>
+        <servlet-name>TaxiServlet</servlet-name>
+        <servlet-class>mg.coop.servlet.taxi.TaxiServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TaxiServlet</servlet-name>
+        <url-pattern>/taxi/*</url-pattern>
+    </servlet-mapping>
+
+</web-app>

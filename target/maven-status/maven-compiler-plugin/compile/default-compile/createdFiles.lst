@@ -1,0 +1,13 @@
+mg/coop/model/TaxiTrajet.class
+mg/coop/servlet/taxi/TaxiServlet.class
+mg/coop/model/Personne.class
+mg/coop/model/Trajet.class
+mg/coop/model/Cooperative.class
+mg/coop/config/DatabaseConfig.class
+mg/coop/model/ReservationPlace.class
+mg/coop/model/Reservation.class
+mg/coop/model/Paiement.class
+mg/coop/dao/TaxiBrousseDAO.class
+mg/coop/model/TypeVoiture.class
+mg/coop/model/TaxiBrousse.class
+mg/coop/model/Depense.class

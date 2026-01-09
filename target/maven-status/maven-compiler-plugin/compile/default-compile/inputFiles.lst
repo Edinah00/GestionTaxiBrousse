@@ -1,0 +1,13 @@
+/home/edinah/Documents/taxibrousse/src/main/java/mg/coop/model/ReservationPlace.java
+/home/edinah/Documents/taxibrousse/src/main/java/mg/coop/servlet/taxi/TaxiServlet.java
+/home/edinah/Documents/taxibrousse/src/main/java/mg/coop/model/Cooperative.java
+/home/edinah/Documents/taxibrousse/src/main/java/mg/coop/model/Personne.java
+/home/edinah/Documents/taxibrousse/src/main/java/mg/coop/model/TypeVoiture.java
+/home/edinah/Documents/taxibrousse/src/main/java/mg/coop/config/DatabaseConfig.java
+/home/edinah/Documents/taxibrousse/src/main/java/mg/coop/dao/TaxiBrousseDAO.java
+/home/edinah/Documents/taxibrousse/src/main/java/mg/coop/model/Depense.java
+/home/edinah/Documents/taxibrousse/src/main/java/mg/coop/model/Paiement.java
+/home/edinah/Documents/taxibrousse/src/main/java/mg/coop/model/Trajet.java
+/home/edinah/Documents/taxibrousse/src/main/java/mg/coop/model/TaxiBrousse.java
+/home/edinah/Documents/taxibrousse/src/main/java/mg/coop/model/Reservation.java
+/home/edinah/Documents/taxibrousse/src/main/java/mg/coop/model/TaxiTrajet.java
