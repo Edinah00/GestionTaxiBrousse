@@ -1,4 +1,5 @@
 mg/coop/servlet/personne/PersonneServlet.class
+mg/coop/dao/ReservationDAO.class
 mg/coop/servlet/taxi/RechercheVoitureServlet.class
 mg/coop/dao/TaxiTrajetDAO.class
 mg/coop/model/TaxiTrajet.class
@@ -14,4 +15,5 @@ mg/coop/model/Paiement.class
 mg/coop/dao/TaxiBrousseDAO.class
 mg/coop/model/TypeVoiture.class
 mg/coop/model/TaxiBrousse.class
+mg/coop/servlet/reservation/ReservationServlet.class
 mg/coop/model/Depense.class

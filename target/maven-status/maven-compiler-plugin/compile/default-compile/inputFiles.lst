@@ -1,4 +1,5 @@
 /home/edinah/Documents/GestionTaxiBrousse/src/main/java/mg/coop/dao/PersonneDAO.java
+/home/edinah/Documents/GestionTaxiBrousse/src/main/java/mg/coop/servlet/reservation/ReservationServlet.java
 /home/edinah/Documents/GestionTaxiBrousse/src/main/java/mg/coop/model/TaxiTrajet.java
 /home/edinah/Documents/GestionTaxiBrousse/src/main/java/mg/coop/model/Depense.java
 /home/edinah/Documents/GestionTaxiBrousse/src/main/java/mg/coop/model/Reservation.java
@@ -15,3 +16,4 @@
 /home/edinah/Documents/GestionTaxiBrousse/src/main/java/mg/coop/dao/TaxiTrajetDAO.java
 /home/edinah/Documents/GestionTaxiBrousse/src/main/java/mg/coop/model/Trajet.java
 /home/edinah/Documents/GestionTaxiBrousse/src/main/java/mg/coop/model/Paiement.java
+/home/edinah/Documents/GestionTaxiBrousse/src/main/java/mg/coop/dao/ReservationDAO.java

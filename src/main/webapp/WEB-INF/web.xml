@@ -12,12 +12,7 @@
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-    <!-- Encoding UTF-8 -->
-    <!-- <filter>
-        <filter-name>encodingFilter</filter-name>
-        <filter-class>jakarta.servlet.Filter</filter-class>
-    </filter> -->
-
+    <!-- Servlet Taxi -->
     <servlet>
         <servlet-name>TaxiServlet</servlet-name>
         <servlet-class>mg.coop.servlet.taxi.TaxiServlet</servlet-class>
@@ -27,6 +22,7 @@
         <url-pattern>/taxi/*</url-pattern>
     </servlet-mapping>
 
+    <!-- Servlet Recherche Voiture -->
     <servlet>
         <servlet-name>RechercheVoitureServlet</servlet-name>
         <servlet-class>mg.coop.servlet.taxi.RechercheVoitureServlet</servlet-class>
@@ -34,6 +30,16 @@
     <servlet-mapping>
         <servlet-name>RechercheVoitureServlet</servlet-name>
         <url-pattern>/rechercheVoiture/*</url-pattern>
+    </servlet-mapping>
+
+    <!-- Servlet Reservation -->
+    <servlet>
+        <servlet-name>ReservationServlet</servlet-name>
+        <servlet-class>mg.coop.servlet.reservation.ReservationServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ReservationServlet</servlet-name>
+        <url-pattern>/reservation/*</url-pattern>
     </servlet-mapping>
 
 </web-app>
