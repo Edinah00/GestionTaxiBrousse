@@ -58,8 +58,8 @@ public class ReservationServlet extends HttpServlet {
                 }
                 
                 if (trajet != null) {
-                    // Récupérer les places occupées
-                    List<Integer> placesOccupees = reservationDAO.getPlacesReservees(taxiTrajetId);
+                    // CORRECTION: Utiliser getPlacesOccupees au lieu de getPlacesReservees
+                    List<Integer> placesOccupees = reservationDAO.getPlacesOccupees(taxiTrajetId);
                     
                     request.setAttribute("trajet", trajet);
                     request.setAttribute("placesOccupees", placesOccupees);
@@ -91,7 +91,8 @@ public class ReservationServlet extends HttpServlet {
             // Récupérer les numéros de places pour chaque réservation
             Map<Integer, List<Integer>> placesParReservation = new HashMap<>();
             for (Reservation reservation : reservations) {
-                List<Integer> places = reservationDAO.getPlacesOccupees(reservation.getId());
+                // CORRECTION: Utiliser getPlacesReservees avec reservation.getId()
+                List<Integer> places = reservationDAO.getPlacesReservees(reservation.getId());
                 placesParReservation.put(reservation.getId(), places);
             }
             
@@ -160,6 +161,8 @@ public class ReservationServlet extends HttpServlet {
             // Si c'est un acompte, calculer 50%
             if ("ACOMPTE".equals(typePaiement)) {
                 montantPaiement = montantTotal * 0.5;
+            } else if ("TOTAL ARRIVEE".equals(typePaiement)) {
+                montantPaiement = 0;
             }
             
             // Créer la réservation
@@ -179,8 +182,10 @@ public class ReservationServlet extends HttpServlet {
                     reservationDAO.insertReservationPlace(taxiTrajetId, reservationId, numeroPlace);
                 }
                 
-                // Enregistrer le paiement
-                reservationDAO.insertPaiement(reservationId, typePaiement, modePaiement, montantPaiement);
+                // Enregistrer le paiement seulement si montant > 0
+                if (montantPaiement > 0) {
+                    reservationDAO.insertPaiement(reservationId, typePaiement, modePaiement, montantPaiement);
+                }
                 
                 // Redirection vers une page de confirmation
                 request.setAttribute("success", "Réservation effectuée avec succès!");

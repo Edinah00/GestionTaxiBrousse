@@ -2,7 +2,6 @@ package mg.coop.dao;
 
 import mg.coop.config.DatabaseConfig;
 import mg.coop.model.Reservation;
-import mg.coop.model.ReservationPlace;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,6 +9,9 @@ import java.util.List;
 
 public class ReservationDAO {
 
+    /**
+     * Récupère les places occupées pour un taxi_trajet donné
+     */
     public List<Integer> getPlacesOccupees(int taxiTrajetId) throws Exception {
         List<Integer> placesOccupees = new ArrayList<>();
         String sql = "SELECT numero_place FROM reservation_place WHERE taxi_trajet_id = ? ORDER BY numero_place";
@@ -25,6 +27,26 @@ public class ReservationDAO {
             }
         }
         return placesOccupees;
+    }
+
+    /**
+     * Récupère les places réservées pour une réservation donnée
+     */
+    public List<Integer> getPlacesReservees(int reservationId) throws Exception {
+        List<Integer> places = new ArrayList<>();
+        String sql = "SELECT numero_place FROM reservation_place WHERE reservation_id = ? ORDER BY numero_place";
+        
+        try (Connection c = DatabaseConfig.getConnection();
+             PreparedStatement ps = c.prepareStatement(sql)) {
+            
+            ps.setInt(1, reservationId);
+            ResultSet rs = ps.executeQuery();
+            
+            while (rs.next()) {
+                places.add(rs.getInt("numero_place"));
+            }
+        }
+        return places;
     }
 
     public int insertReservation(Reservation reservation) throws Exception {
@@ -94,6 +116,9 @@ public class ReservationDAO {
         return false;
     }
 
+    /**
+     * CORRECTION: Ajout de GROUP BY pour éviter les doublons et agrégation des paiements
+     */
     public List<Reservation> getAllReservations() throws Exception {
         List<Reservation> reservations = new ArrayList<>();
         String sql = "SELECT r.id, r.taxi_trajet_id, r.nom_client, r.telephone, r.nb_places, " +
@@ -102,7 +127,9 @@ public class ReservationDAO {
                      "tb.immatriculation, tv.libelle as type_voiture, " +
                      "p_chauffeur.nom as nom_chauffeur, " +
                      "tr.prix_base, " +
-                     "COALESCE(p.montant, 0) as montant_paye, p.mode_paiement, p.type_paiement " +
+                     "COALESCE(SUM(p.montant), 0) as montant_paye, " +
+                     "MAX(p.mode_paiement) as mode_paiement, " +
+                     "MAX(p.type_paiement) as type_paiement " +
                      "FROM reservation r " +
                      "JOIN taxi_trajet tt ON r.taxi_trajet_id = tt.id " +
                      "JOIN trajet tr ON tt.trajet_id = tr.id " +
@@ -110,6 +137,9 @@ public class ReservationDAO {
                      "JOIN type_voiture tv ON tb.type_voiture_id = tv.id " +
                      "JOIN personne p_chauffeur ON tt.chauffeur_id = p_chauffeur.id " +
                      "LEFT JOIN paiement p ON r.id = p.reservation_id " +
+                     "GROUP BY r.id, r.taxi_trajet_id, r.nom_client, r.telephone, r.nb_places, " +
+                     "r.statut, r.date_reservation, tr.depart, tr.arrivee, tt.date_heure_depart, " +
+                     "tb.immatriculation, tv.libelle, p_chauffeur.nom, tr.prix_base " +
                      "ORDER BY r.date_reservation DESC";
         
         try (Connection c = DatabaseConfig.getConnection();
@@ -148,22 +178,5 @@ public class ReservationDAO {
             }
         }
         return reservations;
-    }
-
-    public List<Integer> getPlacesReservees(int reservationId) throws Exception {
-        List<Integer> places = new ArrayList<>();
-        String sql = "SELECT numero_place FROM reservation_place WHERE reservation_id = ? ORDER BY numero_place";
-        
-        try (Connection c = DatabaseConfig.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql)) {
-            
-            ps.setInt(1, reservationId);
-            ResultSet rs = ps.executeQuery();
-            
-            while (rs.next()) {
-                places.add(rs.getInt("numero_place"));
-            }
-        }
-        return places;
     }
 }
