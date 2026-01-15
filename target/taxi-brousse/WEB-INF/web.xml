@@ -41,5 +41,23 @@
         <servlet-name>ReservationServlet</servlet-name>
         <url-pattern>/reservation/*</url-pattern>
     </servlet-mapping>
+    <!-- Servlet Trajet -->
+    <servlet>
+        <servlet-name>TrajetServlet</servlet-name>
+        <servlet-class>mg.coop.servlet.trajet.TrajetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TrajetServlet</servlet-name>
+        <url-pattern>/trajet/*</url-pattern>
+    </servlet-mapping>
+    <!-- Servlet TaxiTrajet -->
+    <servlet>
+        <servlet-name>TaxiTrajetServlet</servlet-name>
+        <servlet-class>mg.coop.servlet.trajet.TaxiTrajetServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>TaxiTrajetServlet</servlet-name>
+        <url-pattern>/taxitrajet/*</url-pattern>
+    </servlet-mapping>
 
 </web-app>

@@ -1,6 +1,7 @@
 package mg.coop.model;
 
 import java.time.LocalDateTime;
+import java.sql.Date;
 
 /*public class TaxiTrajet {
 
@@ -8,7 +9,6 @@ import java.time.LocalDateTime;
     private int taxiId;
     private int trajetId;
     private int chauffeurId;
-    private Integer aideChauffeurId;
     private LocalDateTime dateHeureDepart;
 
     public TaxiTrajet() {}
@@ -75,13 +75,16 @@ public class TaxiTrajet {
     private int trajetId;
     private String depart;
     private String arrivee;
-    private int distanceKm;
+    private double distanceKm;
     private double prixBase;
     private int chauffeurId;
     private String nomChauffeur;
-    private Timestamp dateHeureDepart;
+    private LocalDateTime dateHeureDepart;
     private int placesReservees;
     private String cooperative;
+        private Integer aideChauffeurId;
+private String nomAideChauffeur;
+
     
     // Constructeurs
     public TaxiTrajet() {}
@@ -117,8 +120,8 @@ public class TaxiTrajet {
     public String getArrivee() { return arrivee; }
     public void setArrivee(String arrivee) { this.arrivee = arrivee; }
     
-    public int getDistanceKm() { return distanceKm; }
-    public void setDistanceKm(int distanceKm) { 
+    public double getDistanceKm() { return distanceKm; }
+    public void setDistanceKm(double distanceKm) { 
         this.distanceKm = distanceKm; 
     }
     
@@ -136,9 +139,9 @@ public class TaxiTrajet {
     public void setNomChauffeur(String nomChauffeur) { 
         this.nomChauffeur = nomChauffeur; 
     }
-    
-    public Timestamp getDateHeureDepart() { return dateHeureDepart; }
-    public void setDateHeureDepart(Timestamp dateHeureDepart) { 
+
+    public LocalDateTime getDateHeureDepart() { return dateHeureDepart; }
+    public void setDateHeureDepart(LocalDateTime dateHeureDepart) { 
         this.dateHeureDepart = dateHeureDepart; 
     }
     
@@ -155,4 +158,17 @@ public class TaxiTrajet {
     public int getPlacesDisponibles() {
         return nbrPlaces - placesReservees;
     }
+    public Integer getAideChauffeurId() {
+        return aideChauffeurId;
+    }
+    public void setAideChauffeurId(Integer aideChauffeurId) {
+        this.aideChauffeurId = aideChauffeurId;
+    }
+    public String getNomAideChauffeur() {
+        return nomAideChauffeur;
+    }
+    public void setNomAideChauffeur(String nomAideChauffeur) {
+        this.nomAideChauffeur = nomAideChauffeur;
+    }
+
 }

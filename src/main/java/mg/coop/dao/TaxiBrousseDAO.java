@@ -9,7 +9,7 @@ import java.util.List;
 
 public class TaxiBrousseDAO {
 
-    public List<TaxiBrousse> findAll() throws Exception {
+    public static List<TaxiBrousse> findAll() throws Exception {
         List<TaxiBrousse> list = new ArrayList<>();
         String sql = "SELECT * FROM taxi_brousse";
 

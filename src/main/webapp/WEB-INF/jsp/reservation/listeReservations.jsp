@@ -1,5 +1,13 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.*, java.text.SimpleDateFormat, mg.coop.model.Reservation" %>
+
+<%
+    SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+    SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+    SimpleDateFormat localDateTimeFormatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+%>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -312,8 +320,9 @@
                         <div>
                             <div class="reservation-id">🎫 Réservation #<%= reservation.getId() %></div>
                             <small style="color: #7f8c8d;">
-                                <%= reservation.getDateReservation() != null ? localDateTimeFormatter.format(reservation.getDateReservation()) : "N/A" %>
-                            </small>
+    <%= reservation.getDateReservation() != null ? dateTimeFormat.format(reservation.getDateReservation()) : "N/A" %>
+</small>
+
                         </div>
                         <span class="statut-badge statut-<%= reservation.getStatut().toLowerCase() %>">
                             <%= reservation.getStatut() %>

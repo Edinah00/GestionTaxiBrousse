@@ -28,11 +28,11 @@ INSERT INTO taxi_brousse (cooperative_id, immatriculation, type_voiture_id) VALU
 (1, '9101 TAF', 1);
 
 -- TRAJET
-INSERT INTO trajet (depart, arrivee, distance_km, prix_base, pourcentage_augmentation) VALUES
-('Tananarive', 'Toamasina', 350, 60000, 10),
-('Tananarive', 'Fianarantsoa', 410, 70000, 10),
-('Tananarive', 'Mahajanga', 570, 90000, 10),
-('Tananarive', 'Toliara', 930, 120000, 10);
+INSERT INTO trajet (depart, arrivee, distance_km, prix_base, pourcentage_augmentation,nombre_jour) VALUES
+('Tananarive', 'Toamasina', 350, 60000, 10, 1),
+('Tananarive', 'Fianarantsoa', 410, 70000, 10, 2),
+('Tananarive', 'Mahajanga', 570, 90000, 10, 3),
+('Tananarive', 'Toliara', 930, 120000, 10, 4);
 
 -- TAXI_TRAJET
 INSERT INTO taxi_trajet (taxi_id, trajet_id, chauffeur_id, aide_chauffeur_id, date_heure_depart) VALUES

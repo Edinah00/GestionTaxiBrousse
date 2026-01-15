@@ -26,17 +26,18 @@ CREATE TABLE personne (
 -- =========================
 CREATE TABLE type_voiture (
     id SERIAL PRIMARY KEY,
-    libelle VARCHAR(50) NOT NULL UNIQUE,
+    libelle VARCHAR(50) NOT NULL,
+    pourcentage_auUNIQUEgmentation NUMERIC(5,2) DEFAULT 0,
     nbr_places INT NOT NULL CHECK (nbr_places > 0),
     poids_max_bagage NUMERIC(5,2) DEFAULT 20, -- kg par personne
     conso_carburant NUMERIC(5,2) DEFAULT 8, -- L/100km
-    tarif_bagage NUMERIC(10,2) DEFAULT 5000 -- Ariary / kg
+    tarif_bagage NUMERIC(10,2) DEFAULT 5000 -- Ariary / kg refa le mihotra ny entana 
 );
 
 -- =========================
 -- TAXI BROUSSE
 -- =========================
-CREATE TABLE taxi_brousse (
+CREATE TABLE taxi_brousse ( -- voiture 
     id SERIAL PRIMARY KEY,
     cooperative_id INT NOT NULL REFERENCES cooperative(id),
     immatriculation VARCHAR(20) UNIQUE NOT NULL,
@@ -63,22 +64,23 @@ JOIN
 -- =========================
 -- TRAJET
 -- =========================
-CREATE TABLE trajet (
+CREATE TABLE trajet ( -- lieu depart sy ny arrive , 
     id SERIAL PRIMARY KEY,
     depart VARCHAR(100) NOT NULL,
     arrivee VARCHAR(100) NOT NULL,
-    distance_km INT,
+    distance_km INT, -- refa fantatra ny distance dia azo kajiana ny conso carburant
     prix_base NUMERIC(10,2),
-    pourcentage_augmentation NUMERIC(5,2)
+    pourcentage_augmentation NUMERIC(5,2) ,-- refa miakatra ny vidiny amin'ny fotoana sasany le fety ohatra
+    nombre_jour INT
 );
 
 -- =========================
 -- TAXI_TRAJET
 -- =========================
-CREATE TABLE taxi_trajet (
+CREATE TABLE taxi_trajet ( -- voyage tegna izy 
     id SERIAL PRIMARY KEY,
     taxi_id INT NOT NULL REFERENCES taxi_brousse(id),
-    trajet_id INT NOT NULL REFERENCES trajet(id),
+    trajet_id INT NOT NULL REFERENCES trajet(id), -- trajet atao
     chauffeur_id INT NOT NULL REFERENCES personne(id),
     aide_chauffeur_id INT REFERENCES personne(id),
     date_heure_depart TIMESTAMP NOT NULL
@@ -103,7 +105,7 @@ CREATE TABLE reservation (
 -- =========================
 CREATE TABLE reservation_place (
     id SERIAL PRIMARY KEY,
-    taxi_trajet_id INT NOT NULL REFERENCES taxi_trajet(id),
+    taxi_trajet_id INT NOT NULL REFERENCES taxi_trajet(id),-- miala
     reservation_id INT NOT NULL REFERENCES reservation(id),
     numero_place INT NOT NULL,
     CONSTRAINT uq_place_trajet UNIQUE (taxi_trajet_id, numero_place)
@@ -134,3 +136,58 @@ CREATE TABLE depense (
     montant NUMERIC(10,2),
     date_depense DATE
 );
+
+
+
+
+-- =========================
+-- taxi_trajet dépend de trajet et taxi_brousse
+-- =========================
+ALTER TABLE taxi_trajet
+DROP CONSTRAINT IF EXISTS taxi_trajet_trajet_id_fkey,
+ADD CONSTRAINT taxi_trajet_trajet_id_fkey
+FOREIGN KEY (trajet_id) REFERENCES trajet(id) ON DELETE CASCADE;
+
+ALTER TABLE taxi_trajet
+DROP CONSTRAINT IF EXISTS taxi_trajet_taxi_id_fkey,
+ADD CONSTRAINT taxi_trajet_taxi_id_fkey
+FOREIGN KEY (taxi_id) REFERENCES taxi_brousse(id) ON DELETE CASCADE;
+
+ALTER TABLE taxi_trajet
+DROP CONSTRAINT IF EXISTS taxi_trajet_chauffeur_id_fkey,
+ADD CONSTRAINT taxi_trajet_chauffeur_id_fkey
+FOREIGN KEY (chauffeur_id) REFERENCES personne(id) ON DELETE CASCADE;
+
+ALTER TABLE taxi_trajet
+DROP CONSTRAINT IF EXISTS taxi_trajet_aide_chauffeur_id_fkey,
+ADD CONSTRAINT taxi_trajet_aide_chauffeur_id_fkey
+FOREIGN KEY (aide_chauffeur_id) REFERENCES personne(id) ON DELETE CASCADE;
+
+-- =========================
+-- reservation dépend de taxi_trajet
+-- =========================
+ALTER TABLE reservation
+DROP CONSTRAINT IF EXISTS reservation_taxi_trajet_id_fkey,
+ADD CONSTRAINT reservation_taxi_trajet_id_fkey
+FOREIGN KEY (taxi_trajet_id) REFERENCES taxi_trajet(id) ON DELETE CASCADE;
+
+-- =========================
+-- reservation_place dépend de reservation et taxi_trajet
+-- =========================
+ALTER TABLE reservation_place
+DROP CONSTRAINT IF EXISTS reservation_place_reservation_id_fkey,
+ADD CONSTRAINT reservation_place_reservation_id_fkey
+FOREIGN KEY (reservation_id) REFERENCES reservation(id) ON DELETE CASCADE;
+
+ALTER TABLE reservation_place
+DROP CONSTRAINT IF EXISTS reservation_place_taxi_trajet_id_fkey,
+ADD CONSTRAINT reservation_place_taxi_trajet_id_fkey
+FOREIGN KEY (taxi_trajet_id) REFERENCES taxi_trajet(id) ON DELETE CASCADE;
+
+-- =========================
+-- paiement dépend de reservation
+-- =========================
+ALTER TABLE paiement
+DROP CONSTRAINT IF EXISTS paiement_reservation_id_fkey,
+ADD CONSTRAINT paiement_reservation_id_fkey
+FOREIGN KEY (reservation_id) REFERENCES reservation(id) ON DELETE CASCADE;

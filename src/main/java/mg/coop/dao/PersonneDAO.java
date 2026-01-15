@@ -2,6 +2,7 @@ package mg.coop.dao;
 
 import java.sql.Statement;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
@@ -66,5 +67,27 @@ public void delete(int id) throws Exception {
         pst.executeUpdate();
     }
 }
+public static List<Personne> getAllChauffeurs() throws Exception {
+    List<Personne> chauffeurs = new ArrayList<>();
+
+    String sql = "SELECT id, nom, telephone, roles FROM personne WHERE roles = 'CHAUFFEUR' ORDER BY nom";
+
+    try (Connection conn = DatabaseConfig.getConnection();
+         PreparedStatement ps = conn.prepareStatement(sql);
+         ResultSet rs = ps.executeQuery()) {
+
+        while (rs.next()) {
+            Personne p = new Personne();
+            p.setId(rs.getInt("id"));
+            p.setNom(rs.getString("nom"));
+            p.setTelephone(rs.getString("telephone"));
+            p.setRole(rs.getString("roles"));
+            chauffeurs.add(p);
+        }
+    }
+
+    return chauffeurs;
+}
+
 
 }

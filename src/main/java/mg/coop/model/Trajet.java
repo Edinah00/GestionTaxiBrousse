@@ -8,7 +8,7 @@ public class Trajet {
     private int distanceKm;
     private double prixBase;
     private double pourcentageAugmentation;
-
+    private int nombreJour;
     public Trajet() {}
 
     public int getId() {
@@ -58,4 +58,11 @@ public class Trajet {
     public void setPourcentageAugmentation(double pourcentageAugmentation) {
         this.pourcentageAugmentation = pourcentageAugmentation;
     }
+    public int getNombreJour() {
+        return nombreJour;
+    }
+    public void setNombreJour(int nombreJour) {
+        this.nombreJour = nombreJour;
+    }
+    
 }
