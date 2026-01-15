@@ -84,8 +84,15 @@ public class TaxiTrajet {
     private String cooperative;
         private Integer aideChauffeurId;
 private String nomAideChauffeur;
-
+   private double valMax;
     
+public double getValMax() {
+    return valMax;
+}
+public void setValMax(double valMax) {
+    this.valMax = valMax;
+}
+
     // Constructeurs
     public TaxiTrajet() {}
     
@@ -170,5 +177,5 @@ private String nomAideChauffeur;
     public void setNomAideChauffeur(String nomAideChauffeur) {
         this.nomAideChauffeur = nomAideChauffeur;
     }
-
+   
 }

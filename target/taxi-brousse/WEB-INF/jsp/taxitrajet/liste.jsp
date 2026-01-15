@@ -7,11 +7,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Liste des Taxi-Trajets</title>
+        <link rel="stylesheet" href="<%= request.getContextPath() %>/assets/css/index.css">
     <style>
         body { font-family: Arial, sans-serif; background: #f4f6f9; margin: 0; padding: 20px; }
         h1 { color: #2c3e50; }
         a.btn { padding: 8px 12px; border-radius: 4px; text-decoration: none; margin: 5px; }
-        .btn-primary { background: #3498db; color: #fff; }
+        .btn-primary { background: #3498db; color: #fff;max-height: 50px;}
         .btn-warning { background: #f39c12; color: #fff; }
         .btn-danger { background: #e74c3c; color: #fff; }
         table { width: 100%; border-collapse: collapse; margin-top: 15px; background: #fff; }
@@ -21,14 +22,41 @@
     </style>
 </head>
 <body>
+    <div class="container">
+
     <jsp:include page="/WEB-INF/jsp/components/sidebar.jsp" />
+     <div class="content">
 
     <h1>Liste des Taxi-Trajets</h1>
     <a href="<%= request.getContextPath() %>/taxitrajet?action=add" class="btn btn-primary">➕ Nouveau Taxi-Trajet</a>
+            <form method="get" action="<%= request.getContextPath() %>/taxitrajet">
+    <input type="hidden" name="action" value="list">
+
+    <label for="trajet">Filtrer par trajet :</label>
+    <select name="trajet" id="trajet" onchange="this.form.submit()">
+        <option value="">-- Tous les trajets --</option>
+        <%
+            List<String> trajets = (List<String>) request.getAttribute("trajetsDisponibles");
+            String trajetSelectionne = request.getParameter("trajet");
+
+            if (trajets != null) {
+                for (String t : trajets) {
+        %>
+            <option value="<%= t %>" <%= t.equals(trajetSelectionne) ? "selected" : "" %>>
+                <%= t %>
+            </option>
+        <%
+                }
+            }
+        %>
+    </select>
+</form>
+
+
 
     <table>
         <tr>
-            <th>Taxi</th><th>Trajet</th><th>Chauffeur</th><th>Date départ</th><th>Actions</th>
+            <th>Taxi</th><th>Trajet</th><th>Chauffeur</th><th>Date départ</th><th>Actions</th><th>Valeur Max</th>
         </tr>
         <%
             List<mg.coop.model.TaxiTrajet> liste = (List<mg.coop.model.TaxiTrajet>) request.getAttribute("taxitrajets");
@@ -44,11 +72,16 @@
                 <a href="<%= request.getContextPath() %>/taxitrajet?action=edit&id=<%= tt.getId() %>" class="btn btn-warning">✏️ Modifier</a>
                 <a href="<%= request.getContextPath() %>/taxitrajet?action=delete&id=<%= tt.getId() %>" class="btn btn-danger">🗑️ Supprimer</a>
             </td>
+            <td> <a href="<%= request.getContextPath() %>/taxitrajet?action=details&id=<%= tt.getId() %>"><%= tt.getValMax() %></a> </td>
         </tr>
         <%
                 }
             }
         %>
     </table>
+         </div>
+
+        </div>
+
 </body>
 </html>

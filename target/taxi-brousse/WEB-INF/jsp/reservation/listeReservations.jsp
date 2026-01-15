@@ -1,6 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page import="java.util.*, java.text.SimpleDateFormat, mg.coop.model.Reservation" %>
-
+<%@ page import="java.time.format.DateTimeFormatter" %>
+<%
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+%>
 <%
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -263,9 +266,11 @@
     </style>
 </head>
 <body>
+<div class="container">
+
 
 <jsp:include page="/WEB-INF/jsp/components/sidebar.jsp" />
-
+<div class="content">
 <div class="liste-container">
     
     <% if (request.getAttribute("erreur") != null) { %>
@@ -275,8 +280,6 @@
     <%
         List<Reservation> reservations = (List<Reservation>) request.getAttribute("reservations");
         Map<Integer, List<Integer>> placesParReservation = (Map<Integer, List<Integer>>) request.getAttribute("placesParReservation");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd/MM/yyyy HH:mm");
         
         int totalReservations = reservations != null ? reservations.size() : 0;
         int totalPlaces = 0;
@@ -320,7 +323,7 @@
                         <div>
                             <div class="reservation-id">🎫 Réservation #<%= reservation.getId() %></div>
                             <small style="color: #7f8c8d;">
-    <%= reservation.getDateReservation() != null ? dateTimeFormat.format(reservation.getDateReservation()) : "N/A" %>
+<%= reservation.getDateReservation() != null ? reservation.getDateReservation().format(dateTimeFormatter) : "N/A" %>
 </small>
 
                         </div>
@@ -413,7 +416,8 @@
             <p>Il n'y a pas encore de réservations enregistrées dans le système.</p>
         </div>
     <% } %>
+    </div>
 </div>
-
+</div>
 </body>
 </html>

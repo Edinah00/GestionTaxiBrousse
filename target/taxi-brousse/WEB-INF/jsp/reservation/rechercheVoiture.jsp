@@ -8,11 +8,13 @@
 <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/index.css">
 </head>
 <body>
-<%-- Inclure sidebar --%>
-<jsp:include page="/WEB-INF/jsp/components/sidebar.jsp" />
+
 
 
 <div class="container">
+    <jsp:include page="/WEB-INF/jsp/components/sidebar.jsp" />
+<div class="content">
+
     <h1>🚐 Réservation Taxi-Brousse</h1>
     <p>Trouvez et réservez votre place facilement</p>
 
@@ -82,6 +84,8 @@
         <%   } 
            } 
         } %>
+        </div>
+
 </div>
 </body>
 </html>

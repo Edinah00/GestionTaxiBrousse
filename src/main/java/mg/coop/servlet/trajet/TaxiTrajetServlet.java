@@ -28,7 +28,8 @@ public class TaxiTrajetServlet extends HttpServlet {
             throws ServletException, IOException {
 
         String action = request.getParameter("action");
-        if (action == null) action = "liste";
+        if (action == null)
+            action = "liste";
 
         try {
             switch (action) {
@@ -36,13 +37,13 @@ public class TaxiTrajetServlet extends HttpServlet {
                     // Charger trajets et chauffeurs pour dropdown
                     List<Trajet> trajets = TrajetDAO.findAll();
                     List<Personne> chauffeurs = PersonneDAO.getAllChauffeurs();
-                     List<TaxiBrousse> taxis = TaxiBrousseDAO.findAll();
-request.setAttribute("taxis", taxis);
+                    List<TaxiBrousse> taxis = TaxiBrousseDAO.findAll();
+                    request.setAttribute("taxis", taxis);
 
                     request.setAttribute("trajets", trajets);
                     request.setAttribute("chauffeurs", chauffeurs);
                     request.getRequestDispatcher("/WEB-INF/jsp/taxitrajet/form.jsp")
-                           .forward(request, response);
+                            .forward(request, response);
                     break;
 
                 case "edit":
@@ -51,13 +52,13 @@ request.setAttribute("taxis", taxis);
                     request.setAttribute("taxitrajet", tt);
 
                     // Charger trajets et chauffeurs pour dropdown
-                     List<TaxiBrousse> taxiList = TaxiBrousseDAO.findAll();
+                    List<TaxiBrousse> taxiList = TaxiBrousseDAO.findAll();
                     request.setAttribute("taxis", taxiList);
                     request.setAttribute("trajets", TrajetDAO.findAll());
                     request.setAttribute("chauffeurs", PersonneDAO.getAllChauffeurs());
 
                     request.getRequestDispatcher("/WEB-INF/jsp/taxitrajet/form.jsp")
-                           .forward(request, response);
+                            .forward(request, response);
                     break;
 
                 case "delete":
@@ -70,10 +71,33 @@ request.setAttribute("taxis", taxis);
 
                 case "liste":
                 default:
-                    List<TaxiTrajet> liste = TaxiTrajetDAO.findAll();
+                    String trajetFiltre = request.getParameter("trajet");
+
+                    List<TaxiTrajet> liste;
+                    if (trajetFiltre == null || trajetFiltre.isEmpty()) {
+                        liste = TaxiTrajetDAO.findAll();
+                    } else {
+                        liste = taxiTrajetDao.findByTrajet(trajetFiltre);
+                    }
+
+                    // Liste des trajets pour la dropdown
+                    List<String> trajetsDisponibles = taxiTrajetDao.getAllTrajets();
+
                     request.setAttribute("taxitrajets", liste);
+                    request.setAttribute("trajetsDisponibles", trajetsDisponibles);
+
                     request.getRequestDispatcher("/WEB-INF/jsp/taxitrajet/liste.jsp")
-                           .forward(request, response);
+                            .forward(request, response);
+                    break;
+                case "details":
+                    int idTaxiTrajet = Integer.parseInt(request.getParameter("id"));
+                    TaxiTrajet taxiTrajetDetails = taxiTrajetDao.findById(idTaxiTrajet);
+                    double[] prix = TaxiTrajetDAO.getPrixTrajet(taxiTrajetDetails.getTrajetId());
+                    int[] nbPlace = TaxiTrajetDAO.getPlacesTaxi(taxiTrajetDetails.getTaxiId());
+                    request.setAttribute("prix", prix);
+                    request.setAttribute("nbPlace", nbPlace);   
+                    request.getRequestDispatcher("/WEB-INF/jsp/taxitrajet/details.jsp")
+                            .forward(request, response);
                     break;
             }
         } catch (Exception e) {
@@ -89,10 +113,9 @@ request.setAttribute("taxis", taxis);
             int id = request.getParameter("id") != null && !request.getParameter("id").isEmpty()
                     ? Integer.parseInt(request.getParameter("id"))
                     : 0;
-           
+
             TaxiTrajet tt = new TaxiTrajet();
             tt.setId(id);
-
 
             tt.setTaxiId(Integer.parseInt(request.getParameter("taxiId")));
             tt.setTrajetId(Integer.parseInt(request.getParameter("trajetId")));

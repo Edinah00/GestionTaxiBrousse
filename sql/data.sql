@@ -17,9 +17,10 @@ INSERT INTO personne (nom, telephone, roles) VALUES
 ('Rasolofonirina Fetra', '0322233445', 'AGENT COMMERCIAL');
 
 -- TYPE VOITURE
-INSERT INTO type_voiture (libelle, nbr_places, poids_max_bagage, conso_carburant, tarif_bagage) VALUES
-('Sprinter', 15, 25, 10, 5000),
-('Mazda', 12, 20, 8, 4000);
+INSERT INTO type_voiture (libelle, nbr_places, poids_max_bagage, conso_carburant, tarif_bagage,nb_places_premium) VALUES
+('Sprinter', 15, 25, 10, 5000, 5),
+('Mazda', 12, 20, 8, 4000, 3);
+
 
 -- TAXI BROUSSE
 INSERT INTO taxi_brousse (cooperative_id, immatriculation, type_voiture_id) VALUES
@@ -28,11 +29,11 @@ INSERT INTO taxi_brousse (cooperative_id, immatriculation, type_voiture_id) VALU
 (1, '9101 TAF', 1);
 
 -- TRAJET
-INSERT INTO trajet (depart, arrivee, distance_km, prix_base, pourcentage_augmentation,nombre_jour) VALUES
-('Tananarive', 'Toamasina', 350, 60000, 10, 1),
-('Tananarive', 'Fianarantsoa', 410, 70000, 10, 2),
-('Tananarive', 'Mahajanga', 570, 90000, 10, 3),
-('Tananarive', 'Toliara', 930, 120000, 10, 4);
+INSERT INTO trajet (depart, arrivee, distance_km, prix_base, pourcentage_augmentation,nombre_jour,prix_premium) VALUES
+('Tananarive', 'Toamasina', 350, 60000, 10, 1,90000),
+('Tananarive', 'Fianarantsoa', 410, 70000, 10, 2,100000),
+('Tananarive', 'Mahajanga', 570, 90000, 10, 3,120000),
+('Tananarive', 'Toliara', 930, 120000, 10, 4,150000);
 
 -- TAXI_TRAJET
 INSERT INTO taxi_trajet (taxi_id, trajet_id, chauffeur_id, aide_chauffeur_id, date_heure_depart) VALUES

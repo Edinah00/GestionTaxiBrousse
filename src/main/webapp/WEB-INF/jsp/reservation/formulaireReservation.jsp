@@ -31,7 +31,13 @@
     <div class="trajet-info">
         <h3>📍 Informations du Trajet</h3>
         <p><strong>Départ:</strong> <%= trajet.getDepart() %> → <strong>Arrivée:</strong> <%= trajet.getArrivee() %></p>
-        <p><strong>Date et heure:</strong> <%= trajet.getDateHeureDepart() %></p>
+        <% java.time.LocalDateTime depart = trajet.getDateHeureDepart();
+String dateDepart = "";
+if (depart != null) {
+java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+dateDepart = depart.format(formatter); 
+} %>
+        <p><strong>Date et heure:</strong> <%= dateDepart %></p>
         <p><strong>Véhicule:</strong> <%= trajet.getTypeVoiture() %> (<%= trajet.getImmatriculation() %>)</p>
         <p><strong>Chauffeur:</strong> <%= trajet.getNomChauffeur() %></p>
         <p><strong>Distance:</strong> <%= trajet.getDistanceKm() %> km</p>
