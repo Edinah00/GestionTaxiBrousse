@@ -1,3 +1,34 @@
+-- ====================================
+-- ÉTAPE 1 : NETTOYAGE COMPLET
+-- ====================================
+-- Suppression en cascade (ordre inverse des dépendances)
+TRUNCATE TABLE paiement CASCADE;
+TRUNCATE TABLE reservation_place CASCADE;
+TRUNCATE TABLE reservation CASCADE;
+TRUNCATE TABLE taxi_trajet CASCADE;
+TRUNCATE TABLE trajet CASCADE;
+TRUNCATE TABLE taxi_brousse CASCADE;
+TRUNCATE TABLE type_voiture CASCADE;
+TRUNCATE TABLE personne CASCADE;
+TRUNCATE TABLE depense CASCADE;
+TRUNCATE TABLE cooperative CASCADE;
+
+-- Réinitialisation des séquences
+ALTER SEQUENCE cooperative_id_seq RESTART WITH 1;
+ALTER SEQUENCE personne_id_seq RESTART WITH 1;
+ALTER SEQUENCE type_voiture_id_seq RESTART WITH 1;
+ALTER SEQUENCE taxi_brousse_id_seq RESTART WITH 1;
+ALTER SEQUENCE trajet_id_seq RESTART WITH 1;
+ALTER SEQUENCE taxi_trajet_id_seq RESTART WITH 1;
+ALTER SEQUENCE reservation_id_seq RESTART WITH 1;
+ALTER SEQUENCE reservation_place_id_seq RESTART WITH 1;
+ALTER SEQUENCE paiement_id_seq RESTART WITH 1;
+ALTER SEQUENCE depense_id_seq RESTART WITH 1;
+
+-- ====================================
+-- ÉTAPE 2 : RÉINSERTION DES DONNÉES
+-- ====================================
+
 -- COOPERATIVE
 INSERT INTO cooperative (nom) VALUES
 ('Cooperative Taxi Express');
@@ -16,11 +47,10 @@ INSERT INTO personne (nom, telephone, roles) VALUES
 ('Raharimalala Lala', '0346677889', 'DIRECTEUR'),
 ('Rasolofonirina Fetra', '0322233445', 'AGENT COMMERCIAL');
 
--- TYPE VOITURE
-INSERT INTO type_voiture (libelle, nbr_places, poids_max_bagage, conso_carburant, tarif_bagage,nb_places_premium) VALUES
-('Sprinter', 15, 25, 10, 5000, 5),
-('Mazda', 12, 20, 8, 4000, 3);
-
+-- TYPE VOITURE (ATTENTION: colonne = pourcentage_auUNIQUEgmentation)
+INSERT INTO type_voiture (libelle, nbr_places, poids_max_bagage, conso_carburant, tarif_bagage, nb_places_premium, nb_places_vip, pourcentage_auUNIQUEgmentation) VALUES
+('Sprinter', 15, 10, 25, 5000, 6, 2, 0),
+('Mazda', 12, 20, 8, 4000, 3, 2, 0);
 
 -- TAXI BROUSSE
 INSERT INTO taxi_brousse (cooperative_id, immatriculation, type_voiture_id) VALUES
@@ -29,15 +59,14 @@ INSERT INTO taxi_brousse (cooperative_id, immatriculation, type_voiture_id) VALU
 (1, '9101 TAF', 1);
 
 -- TRAJET
-INSERT INTO trajet (depart, arrivee, distance_km, prix_base, pourcentage_augmentation,nombre_jour,prix_premium) VALUES
-('Tananarive', 'Toamasina', 350, 60000, 10, 1,90000),
-('Tananarive', 'Fianarantsoa', 410, 70000, 10, 2,100000),
-('Tananarive', 'Mahajanga', 570, 90000, 10, 3,120000),
-('Tananarive', 'Toliara', 930, 120000, 10, 4,150000);
+INSERT INTO trajet (depart, arrivee, distance_km, prix_base, pourcentage_augmentation, nombre_jour, prix_premium, prix_vip) VALUES
+('Antananarivo', 'Toamasina', 350, 90000, 0, 1, 140000, 180000),
+('Antananarivo', 'Antsirabe', 170, 40000, 0, 1, 70000, 90000),
+('Antananarivo', 'Fianarantsoa', 410, 90000, 0, 1, 160000, 200000);
 
 -- TAXI_TRAJET
 INSERT INTO taxi_trajet (taxi_id, trajet_id, chauffeur_id, aide_chauffeur_id, date_heure_depart) VALUES
-(1, 1, 1, 3, '2026-01-10 08:00:00'),
+(1, 1, 1, NULL, '2026-01-20 06:00:00'),
 (2, 2, 2, 4, '2026-01-10 09:00:00'),
 (3, 3, 1, 3, '2026-01-11 07:30:00');
 
@@ -51,13 +80,14 @@ INSERT INTO reservation (taxi_trajet_id, nom_client, telephone, nb_places, date_
 INSERT INTO reservation_place (taxi_trajet_id, reservation_id, numero_place) VALUES
 (1, 1, 1),
 (1, 1, 2),
+(1, 2, 3),
 (2, 3, 1),
 (2, 3, 2),
 (2, 3, 3);
 
 -- PAIEMENT
 INSERT INTO paiement (reservation_id, type_paiement, mode_paiement, montant, date_paiement) VALUES
-(1, 'TOTAL RESERVATION', 'ESPECE', 120000, '2026-01-09 10:15:00'),
+(1, 'TOTAL RESERVATION', 'ESPECE', 160000, '2026-01-09 10:15:00'),
 (3, 'ACOMPTE', 'MOBILE MONEY', 50000, '2026-01-09 12:30:00');
 
 -- DEPENSE
@@ -66,3 +96,19 @@ INSERT INTO depense (cooperative_id, type, montant, date_depense) VALUES
 (1, 'REPARATION', 300000, '2026-01-07'),
 (1, 'VISITE TECHNIQUE', 50000, '2026-01-06'),
 (1, 'SALAIRE', 800000, '2026-01-05');
+
+-- ====================================
+-- ÉTAPE 3 : VÉRIFICATION
+-- ====================================
+SELECT 'Vérification des insertions' AS titre;
+
+SELECT 'cooperative' AS table_name, COUNT(*) AS count FROM cooperative
+UNION ALL SELECT 'personne', COUNT(*) FROM personne
+UNION ALL SELECT 'type_voiture', COUNT(*) FROM type_voiture
+UNION ALL SELECT 'taxi_brousse', COUNT(*) FROM taxi_brousse
+UNION ALL SELECT 'trajet', COUNT(*) FROM trajet
+UNION ALL SELECT 'taxi_trajet', COUNT(*) FROM taxi_trajet
+UNION ALL SELECT 'reservation', COUNT(*) FROM reservation
+UNION ALL SELECT 'reservation_place', COUNT(*) FROM reservation_place
+UNION ALL SELECT 'paiement', COUNT(*) FROM paiement
+UNION ALL SELECT 'depense', COUNT(*) FROM depense;

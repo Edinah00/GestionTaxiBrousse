@@ -271,6 +271,7 @@
 
 <jsp:include page="/WEB-INF/jsp/components/sidebar.jsp" />
 <div class="content">
+    
 <div class="liste-container">
     
     <% if (request.getAttribute("erreur") != null) { %>

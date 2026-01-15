@@ -372,7 +372,7 @@ public static double getValeurMax(TaxiTrajet t) throws Exception{
     int[] nbplace= getPlacesTaxi(t.getTaxiId());
   
     double valeurMax = 0 ;
-    valeurMax = (nbplace[0] * prix[0]) +(nbplace[1] * prix[1]);
+    valeurMax = (nbplace[0] * prix[0]) +(nbplace[1] * prix[1]) +(nbplace[2] * prix[2]);
  return valeurMax;
 
 }
@@ -380,8 +380,9 @@ public static int[] getPlacesTaxi(int taxiId) throws Exception {
 
     String sql = """
         SELECT 
-            tv.nbr_places - COALESCE(tv.nb_places_premium, 0) AS places_standard,
-            COALESCE(tv.nb_places_premium, 0) AS places_premium
+            tv.nbr_places AS places_standard,
+            COALESCE(tv.nb_places_premium, 0) AS places_premium,
+            COALESCE(tv.nb_places_vip, 0) AS places_vip
         FROM taxi_brousse tb
         JOIN type_voiture tv ON tb.type_voiture_id = tv.id
         WHERE tb.id = ?
@@ -396,18 +397,19 @@ public static int[] getPlacesTaxi(int taxiId) throws Exception {
         if (rs.next()) {
             return new int[] {
                 rs.getInt("places_standard"),
-                rs.getInt("places_premium")
+                rs.getInt("places_premium"),
+                rs.getInt("places_vip")
             };
         }
     }
-    return new int[] {0, 0};
+    return new int[] {0, 0, 0};
 }
 public static double[] getPrixTrajet(int trajetId) throws Exception {
 
     String sql = """
         SELECT 
             prix_base,
-            prix_premium
+            prix_premium,prix_vip
         FROM trajet
         WHERE id = ?
     """;
@@ -421,11 +423,12 @@ public static double[] getPrixTrajet(int trajetId) throws Exception {
         if (rs.next()) {
             return new double[] {
                 rs.getDouble("prix_base"),
-                rs.getDouble("prix_premium")
+                rs.getDouble("prix_premium"),
+                rs.getDouble("prix_vip")
             };
         }
     }
-    return new double[] {0.0, 0.0};
+    return new double[] {0.0, 0.0 ,0.0};
 }
 
 

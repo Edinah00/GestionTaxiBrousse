@@ -173,4 +173,9 @@ public class Reservation {
     public double getMontantRestant() {
         return getMontantTotal() - montantPaye;
     }
+
+    public void setEtat(boolean boolean1) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setEtat'");
+    }
 }

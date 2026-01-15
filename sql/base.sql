@@ -32,7 +32,8 @@ CREATE TABLE type_voiture (
     poids_max_bagage NUMERIC(5,2) DEFAULT 20, -- kg par personne
     conso_carburant NUMERIC(5,2) DEFAULT 8, -- L/100km
     tarif_bagage NUMERIC(10,2) DEFAULT 5000,-- Ariary / kg refa le mihotra ny entana
-    nb_places_premium INT
+    nb_places_premium INT,
+    nb_places_vip INT
 );
 -- =========================
 -- TAXI BROUSSE
@@ -72,7 +73,8 @@ CREATE TABLE trajet ( -- lieu depart sy ny arrive ,
     prix_base NUMERIC(10,2),
     pourcentage_augmentation NUMERIC(5,2) ,-- refa miakatra ny vidiny amin'ny fotoana sasany le fety ohatra
     nombre_jour INT,
-    prix_premium NUMERIC(10,2)
+    prix_premium NUMERIC(10,2),
+    prix_vip NUMERIC(10,2)
 );
 -- =========================
 -- TAXI_TRAJET
