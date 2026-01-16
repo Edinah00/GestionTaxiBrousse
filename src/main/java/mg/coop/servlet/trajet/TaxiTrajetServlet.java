@@ -8,6 +8,8 @@ import mg.coop.model.TaxiTrajet;
 import mg.coop.model.Trajet;
 import mg.coop.model.Personne;
 import mg.coop.model.TaxiBrousse;
+import mg.coop.util.ValeurReelUtil;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -80,6 +82,14 @@ public class TaxiTrajetServlet extends HttpServlet {
                         liste = taxiTrajetDao.findByTrajet(trajetFiltre);
                     }
 
+                    // Calculer valeur max et valeur réelle pour chaque taxi-trajet
+                    for (TaxiTrajet t : liste) {
+                        double valMax = TaxiTrajetDAO.getValeurMax(t);
+                        double valReel = TaxiTrajetDAO.getValeurReel(t.getId());
+                        t.setValMax(valMax);
+                        t.setValReel(valReel);
+                    }
+
                     // Liste des trajets pour la dropdown
                     List<String> trajetsDisponibles = taxiTrajetDao.getAllTrajets();
 
@@ -89,14 +99,21 @@ public class TaxiTrajetServlet extends HttpServlet {
                     request.getRequestDispatcher("/WEB-INF/jsp/taxitrajet/liste.jsp")
                             .forward(request, response);
                     break;
-                case "details":
+                    
+                case "detailsValeurReel":
                     int idTaxiTrajet = Integer.parseInt(request.getParameter("id"));
                     TaxiTrajet taxiTrajetDetails = taxiTrajetDao.findById(idTaxiTrajet);
-                    double[] prix = TaxiTrajetDAO.getPrixTrajet(taxiTrajetDetails.getTrajetId());
-                    int[] nbPlace = TaxiTrajetDAO.getPlacesTaxi(taxiTrajetDetails.getTaxiId());
-                    request.setAttribute("prix", prix);
-                    request.setAttribute("nbPlace", nbPlace);   
-                    request.getRequestDispatcher("/WEB-INF/jsp/taxitrajet/details.jsp")
+                    
+                    // Récupérer les informations détaillées
+                    ValeurReelUtil.VentesParCategorie ventes = 
+                        ValeurReelUtil.getVentesParCategorie(idTaxiTrajet);
+                    double valeurMax = TaxiTrajetDAO.getValeurMax(taxiTrajetDetails);
+                    
+                    request.setAttribute("taxitrajet", taxiTrajetDetails);
+                    request.setAttribute("ventes", ventes);
+                    request.setAttribute("valeurMax", valeurMax);
+                    
+                    request.getRequestDispatcher("/WEB-INF/jsp/taxitrajet/detailsValeurReel.jsp")
                             .forward(request, response);
                     break;
             }

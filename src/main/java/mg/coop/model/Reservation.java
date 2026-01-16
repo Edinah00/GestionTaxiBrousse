@@ -9,6 +9,7 @@ public class Reservation {
     private String nomClient;
     private String telephone;
     private int nbPlaces;
+    private int nbEnfants;  // NOUVEAU
     private String statut;
     private LocalDateTime dateReservation;
     
@@ -66,6 +67,14 @@ public class Reservation {
 
     public void setNbPlaces(int nbPlaces) {
         this.nbPlaces = nbPlaces;
+    }
+
+    public int getNbEnfants() {
+        return nbEnfants;
+    }
+
+    public void setNbEnfants(int nbEnfants) {
+        this.nbEnfants = nbEnfants;
     }
 
     public String getStatut() {
@@ -175,7 +184,6 @@ public class Reservation {
     }
 
     public void setEtat(boolean boolean1) {
-        // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'setEtat'");
     }
 }

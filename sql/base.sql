@@ -2,6 +2,7 @@
 CREATE DATABASE taxi_brousse;
 \c taxi_brousse;
 
+ 
 -- =========================
 -- COOPERATIVE
 -- =========================
@@ -193,3 +194,24 @@ ALTER TABLE paiement
 DROP CONSTRAINT IF EXISTS paiement_reservation_id_fkey,
 ADD CONSTRAINT paiement_reservation_id_fkey
 FOREIGN KEY (reservation_id) REFERENCES reservation(id) ON DELETE CASCADE;
+
+
+
+
+
+
+
+
+
+-- 1. Ajouter prix_enfant dans la table trajet
+ALTER TABLE trajet 
+ADD COLUMN prix_enfant NUMERIC(10,2) DEFAULT 45000;
+
+-- 2. Ajouter type_place dans reservation_place
+ALTER TABLE reservation_place 
+ADD COLUMN type_place VARCHAR(20) DEFAULT 'STANDARD'
+    CHECK (type_place IN ('STANDARD', 'PREMIUM', 'VIP'));
+
+-- 3. Ajouter nb_enfants dans reservation
+ALTER TABLE reservation 
+ADD COLUMN nb_enfants INT DEFAULT 0;

@@ -1,8 +1,6 @@
 package mg.coop.servlet.trajet;
-
 import java.io.IOException;
 import java.util.List;
-
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -12,7 +10,6 @@ import mg.coop.dao.TaxiTrajetDAO;
 import mg.coop.dao.TrajetDAO;
 import mg.coop.model.TaxiTrajet;
 import mg.coop.model.Trajet;
-
 @WebServlet("/trajet")
 public class TrajetServlet extends HttpServlet {
 

@@ -58,7 +58,6 @@ public class ReservationServlet extends HttpServlet {
                 }
                 
                 if (trajet != null) {
-                    // CORRECTION: Utiliser getPlacesOccupees au lieu de getPlacesReservees
                     List<Integer> placesOccupees = reservationDAO.getPlacesOccupees(taxiTrajetId);
                     
                     request.setAttribute("trajet", trajet);
@@ -85,19 +84,55 @@ public class ReservationServlet extends HttpServlet {
     private void afficherListeReservations(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
-            // Récupérer toutes les réservations
-            List<Reservation> reservations = reservationDAO.getAllReservations();
+            // Récupérer les paramètres de recherche
+            String nomClient = request.getParameter("nomClient");
+            String dateDebut = request.getParameter("dateDebut");
+            String dateFin = request.getParameter("dateFin");
+            String taxiTrajetIdStr = request.getParameter("taxiTrajetId");
+            
+            Integer taxiTrajetId = null;
+            if (taxiTrajetIdStr != null && !taxiTrajetIdStr.isEmpty()) {
+                taxiTrajetId = Integer.parseInt(taxiTrajetIdStr);
+            }
+            
+            // Récupérer les réservations selon les filtres
+            List<Reservation> reservations;
+            if (nomClient != null || dateDebut != null || dateFin != null || taxiTrajetId != null) {
+                reservations = reservationDAO.searchReservations(nomClient, dateDebut, dateFin, taxiTrajetId);
+            } else {
+                reservations = reservationDAO.getAllReservations();
+            }
             
             // Récupérer les numéros de places pour chaque réservation
             Map<Integer, List<Integer>> placesParReservation = new HashMap<>();
             for (Reservation reservation : reservations) {
-                // CORRECTION: Utiliser getPlacesReservees avec reservation.getId()
                 List<Integer> places = reservationDAO.getPlacesReservees(reservation.getId());
                 placesParReservation.put(reservation.getId(), places);
             }
             
+            // Calculer le chiffre d'affaires total
+            double chiffreAffaires = 0;
+            int totalPlaces = 0;
+            for (Reservation r : reservations) {
+                chiffreAffaires += r.getMontantPaye();
+                totalPlaces += r.getNbPlaces();
+            }
+            
+            // Récupérer la liste des taxi-trajets pour le filtre
+            List<ReservationDAO.TaxiTrajetInfo> taxiTrajets = reservationDAO.getAllTaxiTrajetsWithReservations();
+            
             request.setAttribute("reservations", reservations);
             request.setAttribute("placesParReservation", placesParReservation);
+            request.setAttribute("chiffreAffaires", chiffreAffaires);
+            request.setAttribute("totalReservations", reservations.size());
+            request.setAttribute("totalPlaces", totalPlaces);
+            request.setAttribute("taxiTrajets", taxiTrajets);
+            
+            // Conserver les paramètres de recherche
+            request.setAttribute("searchNomClient", nomClient);
+            request.setAttribute("searchDateDebut", dateDebut);
+            request.setAttribute("searchDateFin", dateFin);
+            request.setAttribute("searchTaxiTrajetId", taxiTrajetId);
             
             request.getRequestDispatcher("/WEB-INF/jsp/reservation/listeReservations.jsp")
                    .forward(request, response);
@@ -179,7 +214,7 @@ public class ReservationServlet extends HttpServlet {
                 // Enregistrer les places
                 for (String placeStr : placesSelectionnees) {
                     int numeroPlace = Integer.parseInt(placeStr);
-                    reservationDAO.insertReservationPlace(taxiTrajetId, reservationId, numeroPlace);
+                    reservationDAO.insertReservationPlace(taxiTrajetId, reservationId, numeroPlace,reservation.getStatut());
                 }
                 
                 // Enregistrer le paiement seulement si montant > 0

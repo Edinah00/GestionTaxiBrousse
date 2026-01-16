@@ -1,70 +1,6 @@
 package mg.coop.model;
 
 import java.time.LocalDateTime;
-import java.sql.Date;
-
-/*public class TaxiTrajet {
-
-    private int id;
-    private int taxiId;
-    private int trajetId;
-    private int chauffeurId;
-    private LocalDateTime dateHeureDepart;
-
-    public TaxiTrajet() {}
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public int getTaxiId() {
-        return taxiId;
-    }
-
-    public void setTaxiId(int taxiId) {
-        this.taxiId = taxiId;
-    }
-
-    public int getTrajetId() {
-        return trajetId;
-    }
-
-    public void setTrajetId(int trajetId) {
-        this.trajetId = trajetId;
-    }
-
-    public int getChauffeurId() {
-        return chauffeurId;
-    }
-
-    public void setChauffeurId(int chauffeurId) {
-        this.chauffeurId = chauffeurId;
-    }
-
-    public Integer getAideChauffeurId() {
-        return aideChauffeurId;
-    }
-
-    public void setAideChauffeurId(Integer aideChauffeurId) {
-        this.aideChauffeurId = aideChauffeurId;
-    }
-
-    public LocalDateTime getDateHeureDepart() {
-        return dateHeureDepart;
-    }
-
-    public void setDateHeureDepart(LocalDateTime dateHeureDepart) {
-        this.dateHeureDepart = dateHeureDepart;
-    }
-}
-*/
-
-
-import java.sql.Timestamp;
 
 public class TaxiTrajet {
     private int id;
@@ -82,18 +18,11 @@ public class TaxiTrajet {
     private LocalDateTime dateHeureDepart;
     private int placesReservees;
     private String cooperative;
-        private Integer aideChauffeurId;
-private String nomAideChauffeur;
-   private double valMax;
+    private Integer aideChauffeurId;
+    private String nomAideChauffeur;
+    private double valMax;
+    private double valReel;  // NOUVEAU
     
-public double getValMax() {
-    return valMax;
-}
-public void setValMax(double valMax) {
-    this.valMax = valMax;
-}
-
-    // Constructeurs
     public TaxiTrajet() {}
     
     // Getters et Setters
@@ -165,17 +94,43 @@ public void setValMax(double valMax) {
     public int getPlacesDisponibles() {
         return nbrPlaces - placesReservees;
     }
+    
     public Integer getAideChauffeurId() {
         return aideChauffeurId;
     }
+    
     public void setAideChauffeurId(Integer aideChauffeurId) {
         this.aideChauffeurId = aideChauffeurId;
     }
+    
     public String getNomAideChauffeur() {
         return nomAideChauffeur;
     }
+    
     public void setNomAideChauffeur(String nomAideChauffeur) {
         this.nomAideChauffeur = nomAideChauffeur;
     }
-   
+    
+    public double getValMax() {
+        return valMax;
+    }
+    
+    public void setValMax(double valMax) {
+        this.valMax = valMax;
+    }
+    
+    public double getValReel() {
+        return valReel;
+    }
+    
+    public void setValReel(double valReel) {
+        this.valReel = valReel;
+    }
+    
+    /**
+     * Calcule le taux de remplissage en valeur (%)
+     */
+    public double getTauxRemplissageValeur() {
+        return valMax > 0 ? (valReel / valMax * 100) : 0;
+    }
 }

@@ -7,6 +7,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import mg.coop.util.ValeurReelUtil;
 
 public class TaxiTrajetDAO {
     
@@ -431,6 +432,104 @@ public static double[] getPrixTrajet(int trajetId) throws Exception {
     return new double[] {0.0, 0.0 ,0.0};
 }
 
+
+// Ajouter ces méthodes à la classe TaxiTrajetDAO existante
+
+
+/**
+ * Calcule la valeur maximale théorique d'un taxi-trajet
+ * (toutes les places vendues au prix standard/premium/vip)
+ */
+/*
+public static double getValeurMax(TaxiTrajet t) throws Exception {
+    double[] prix = getPrixTrajet(t.getTrajetId());
+    // prix[0] = standard, prix[1] = premium, prix[2] = vip
+  
+    int[] nbplace = getPlacesTaxi(t.getTaxiId());
+    // nbplace[0] = standard, nbplace[1] = premium, nbplace[2] = vip
+  
+    double valeurMax = (nbplace[0] * prix[0]) + (nbplace[1] * prix[1]) + (nbplace[2] * prix[2]);
+    return valeurMax;
+}
+
+/**
+ * Récupère le nombre de places disponibles par catégorie pour un taxi
+ */ /* 
+public static int[] getPlacesTaxi(int taxiId) throws Exception {
+    String sql = """
+        SELECT 
+            (tv.nbr_places - COALESCE(tv.nb_places_premium, 0) - COALESCE(tv.nb_places_vip, 0)) AS places_standard,
+            COALESCE(tv.nb_places_premium, 0) AS places_premium,
+            COALESCE(tv.nb_places_vip, 0) AS places_vip
+        FROM taxi_brousse tb
+        JOIN type_voiture tv ON tb.type_voiture_id = tv.id
+        WHERE tb.id = ?
+    """;
+
+    try (Connection c = DatabaseConfig.getConnection();
+         PreparedStatement ps = c.prepareStatement(sql)) {
+
+        ps.setInt(1, taxiId);
+        ResultSet rs = ps.executeQuery();
+        
+        if (rs.next()) {
+            return new int[] {
+                rs.getInt("places_standard"),
+                rs.getInt("places_premium"),
+                rs.getInt("places_vip")
+            };
+        }
+    }
+    return new int[] {0, 0, 0};
+}
+
+/**
+ * Récupère les prix par catégorie pour un trajet
+ */
+/*
+public static double[] getPrixTrajet(int trajetId) throws Exception {
+    String sql = """
+        SELECT 
+            COALESCE(prix_base, 0) as prix_standard,
+            COALESCE(prix_premium, 0) as prix_premium,
+            COALESCE(prix_vip, 0) as prix_vip,
+            COALESCE(prix_enfant, 0) as prix_enfant
+        FROM trajet
+        WHERE id = ?
+    """;
+
+    try (Connection c = DatabaseConfig.getConnection();
+         PreparedStatement ps = c.prepareStatement(sql)) {
+
+        ps.setInt(1, trajetId);
+        ResultSet rs = ps.executeQuery();
+        
+        if (rs.next()) {
+            return new double[] {
+                rs.getDouble("prix_standard"),
+                rs.getDouble("prix_premium"),
+                rs.getDouble("prix_vip"),
+                rs.getDouble("prix_enfant")
+            };
+        }
+    }
+    return new double[] {0.0, 0.0, 0.0, 0.0};
+}
+
+/**
+ * Calcule la valeur réelle d'un taxi-trajet
+ * (places effectivement vendues avec prix par catégorie et remise enfant)
+ */
+public static double getValeurReel(int taxiTrajetId) throws Exception {
+    return ValeurReelUtil.getValeurReel(taxiTrajetId);
+}
+
+/**
+ * Récupère le rapport détaillé de la valeur réelle
+ */
+public static String getRapportValeurReel(int taxiTrajetId) throws Exception {
+    return ValeurReelUtil.getRapportDetaille(taxiTrajetId);
+}
 
 
 }
