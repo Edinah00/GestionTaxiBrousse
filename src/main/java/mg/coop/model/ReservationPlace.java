@@ -1,13 +1,22 @@
 package mg.coop.model;
 
 public class ReservationPlace {
-
     private int id;
-    private int taxiTrajetId;
-    private int reservationId;
+
+    private Reservation reservation;
+
     private int numeroPlace;
 
+    private PlacePassager pp;
+
     public ReservationPlace() {
+    }
+
+    public ReservationPlace(int id, Reservation reservation, int numeroPlace, PlacePassager pp) {
+        this.id = id;
+        this.reservation = reservation;
+        this.numeroPlace = numeroPlace;
+        this.pp = pp;
     }
 
     public int getId() {
@@ -18,20 +27,12 @@ public class ReservationPlace {
         this.id = id;
     }
 
-    public int getTaxiTrajetId() {
-        return taxiTrajetId;
+    public Reservation getReservation() {
+        return reservation;
     }
 
-    public void setTaxiTrajetId(int taxiTrajetId) {
-        this.taxiTrajetId = taxiTrajetId;
-    }
-
-    public int getReservationId() {
-        return reservationId;
-    }
-
-    public void setReservationId(int reservationId) {
-        this.reservationId = reservationId;
+    public void setReservation(Reservation reservation) {
+        this.reservation = reservation;
     }
 
     public int getNumeroPlace() {
@@ -41,4 +42,13 @@ public class ReservationPlace {
     public void setNumeroPlace(int numeroPlace) {
         this.numeroPlace = numeroPlace;
     }
+
+    public PlacePassager getPlacePassager() {
+        return pp;
+    }
+
+    public void setPlacePassager(PlacePassager pp) {
+        this.pp = pp;
+    }
 }
+

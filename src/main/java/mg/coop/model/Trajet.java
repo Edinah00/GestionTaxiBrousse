@@ -6,9 +6,9 @@ public class Trajet {
     private String depart;
     private String arrivee;
     private int distanceKm;
+    private double nbrJour;
     private double prixBase;
-    private double pourcentageAugmentation;
-    private int nombreJour;
+
     public Trajet() {}
 
     public int getId() {
@@ -43,6 +43,14 @@ public class Trajet {
         this.distanceKm = distanceKm;
     }
 
+    public double getNbrJour() {
+        return nbrJour;
+    }
+
+    public void setNbrJour(double nbrJour) {
+        this.nbrJour = nbrJour;
+    }
+
     public double getPrixBase() {
         return prixBase;
     }
@@ -51,18 +59,4 @@ public class Trajet {
         this.prixBase = prixBase;
     }
 
-    public double getPourcentageAugmentation() {
-        return pourcentageAugmentation;
-    }
-
-    public void setPourcentageAugmentation(double pourcentageAugmentation) {
-        this.pourcentageAugmentation = pourcentageAugmentation;
-    }
-    public int getNombreJour() {
-        return nombreJour;
-    }
-    public void setNombreJour(int nombreJour) {
-        this.nombreJour = nombreJour;
-    }
-    
 }

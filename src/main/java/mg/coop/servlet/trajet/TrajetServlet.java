@@ -1,131 +1,92 @@
 package mg.coop.servlet.trajet;
-import java.io.IOException;
-import java.util.List;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import mg.coop.dao.TaxiTrajetDAO;
+import jakarta.servlet.http.*;
+import mg.coop.config.DatabaseConfig;
 import mg.coop.dao.TrajetDAO;
-import mg.coop.model.TaxiTrajet;
 import mg.coop.model.Trajet;
-@WebServlet("/trajet")
+
+import java.io.IOException;
+import java.sql.Connection;
+import java.util.List;
+
+@WebServlet("/trajets")
 public class TrajetServlet extends HttpServlet {
 
-    private TrajetDAO trajetDAO;
-
     @Override
-    public void init() {
-        trajetDAO = new TrajetDAO();
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        String action = request.getParameter("action");
+        String action = req.getParameter("action");
 
-        try {
-            if (action == null || action.equals("liste")) {
-                // Récupérer paramètres de recherche
-                String depart = request.getParameter("depart");
-                String arrivee = request.getParameter("arrivee");
-                String dateDepart = request.getParameter("date_depart");
-                String heureDepart = request.getParameter("heure_depart");
+        try (Connection conn = DatabaseConfig.getConnection()) {
+            TrajetDAO dao = new TrajetDAO(conn);
 
-                //conversion
+            if ("form".equals(action)) {
+                req.getRequestDispatcher("/WEB-INF/jsp/trajet/form.jsp")
+                   .forward(req, resp);
 
-                List<Trajet> liste;
-                
-                // Recherche ou liste complète
-                if (depart != null || arrivee != null) {
-                    liste = trajetDAO.search(depart, arrivee , dateDepart, heureDepart);
-                } else {
-                    liste = trajetDAO.findAll();
-                }
-                
-                // Récupérer les lieux pour les dropdowns de recherche
-                List<String> departs = TaxiTrajetDAO.getLieuxDepart();
-                List<String> arrivees = TaxiTrajetDAO.getLieuxArrivee();
-                
-                request.setAttribute("trajets", liste);
-                request.setAttribute("departs", departs);
-                request.setAttribute("arrivees", arrivees);
-                
-                request.getRequestDispatcher("/WEB-INF/jsp/trajet/listeTrajet.jsp")
-                       .forward(request, response);
-            }
-            else if (action.equals("add")) {
-                request.getRequestDispatcher("/WEB-INF/jsp/trajet/formulaireTrajet.jsp")
-                       .forward(request, response);
-            }
-            else if (action.equals("edit")) {
-                int id = Integer.parseInt(request.getParameter("id"));
-Trajet t = new Trajet();
-                t.setId(id);
+            } else if ("edit".equals(action)) {
+                int id = Integer.parseInt(req.getParameter("id"));
+                Trajet trajet = dao.findById(id);
+                req.setAttribute("trajet", trajet);
+                req.getRequestDispatcher("/WEB-INF/jsp/trajet/form.jsp")
+                   .forward(req, resp);
 
-                TrajetDAO.findById(t);
-                
-                if (t != null) {
-                    request.setAttribute("trajet", t);
-                    request.getRequestDispatcher("/WEB-INF/jsp/trajet/formulaireTrajet.jsp")
-                           .forward(request, response);
-                } else {
-                    response.sendRedirect("trajet?action=liste");
-                }
-            }
-            else if (action.equals("delete")) {
-                int id = Integer.parseInt(request.getParameter("id"));
-             
-                    Trajet t = new Trajet();
-                    t.setId(id);    
-                    trajetDAO.delete(t);
-                    response.sendRedirect("trajet?action=liste");
-                
+            } else if ("delete".equals(action)) {
+                int id = Integer.parseInt(req.getParameter("id"));
+                dao.delete(id);
+                resp.sendRedirect(req.getContextPath() + "/trajets");
+
+            } else {
+                // Liste avec recherche
+                String depart = req.getParameter("depart");
+                String arrivee = req.getParameter("arrivee");
+
+                List<Trajet> trajets = dao.search(depart, arrivee);
+                req.setAttribute("trajets", trajets);
+
+                req.getRequestDispatcher("/WEB-INF/jsp/trajet/list.jsp")
+                   .forward(req, resp);
             }
 
         } catch (Exception e) {
-            e.printStackTrace();
             throw new ServletException(e);
         }
     }
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp)
             throws ServletException, IOException {
 
-        try {
-            String idParam = request.getParameter("id");
-            int id = (idParam == null || idParam.isEmpty()) ? 0 : Integer.parseInt(idParam);
+        try (Connection conn = DatabaseConfig.getConnection()) {
+            TrajetDAO dao = new TrajetDAO(conn);
 
-            Trajet t = new Trajet();
-            t.setId(id);
-            t.setDepart(request.getParameter("depart"));
-            t.setArrivee(request.getParameter("arrivee"));
-            
-            String distanceStr = request.getParameter("distance_km");
-            t.setDistanceKm((distanceStr != null && !distanceStr.isEmpty()) 
-                ? Integer.parseInt(distanceStr) : 0);
-            
-            String prixStr = request.getParameter("prix_base");
-            t.setPrixBase((prixStr != null && !prixStr.isEmpty())
-                ? Double.parseDouble(prixStr) : 0.0);
-            
-            String pourcStr = request.getParameter("pourcentage_augmentation");
-            t.setPourcentageAugmentation((pourcStr != null && !pourcStr.isEmpty())
-                ? Double.parseDouble(pourcStr) : 0.0);
+            String idStr = req.getParameter("id");
+            String depart = req.getParameter("depart");
+            String arrivee = req.getParameter("arrivee");
+            int distanceKm = Integer.parseInt(req.getParameter("distanceKm"));
+            double prixBase = Double.parseDouble(req.getParameter("prixBase"));
+            double nbrJour = Double.parseDouble(req.getParameter("nbrJour"));
 
-            if (id == 0) {
-                trajetDAO.save(t);
+            Trajet trajet = new Trajet();
+            trajet.setDepart(depart);
+            trajet.setArrivee(arrivee);
+            trajet.setDistanceKm(distanceKm);
+            trajet.setPrixBase(prixBase);
+            trajet.setNbrJour(nbrJour);
+
+            if (idStr != null && !idStr.isEmpty()) {
+                trajet.setId(Integer.parseInt(idStr));
+                dao.update(trajet);
             } else {
-                trajetDAO.update(t);
+                dao.create(trajet);
             }
 
-            response.sendRedirect("trajet?action=liste");
+            resp.sendRedirect(req.getContextPath() + "/trajets");
 
         } catch (Exception e) {
-            e.printStackTrace();
             throw new ServletException(e);
         }
     }

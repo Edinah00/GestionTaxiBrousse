@@ -7,57 +7,19 @@
 
     <display-name>Gestion Taxi Brousse</display-name>
 
-    <!-- Page d'accueil -->
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
 
-    <!-- Servlet Taxi -->
+ 
+    <!-- TaxiBrousseServlet -->
     <servlet>
-        <servlet-name>TaxiServlet</servlet-name>
-        <servlet-class>mg.coop.servlet.taxi.TaxiServlet</servlet-class>
+        <servlet-name>TaxiBrousseServlet</servlet-name>
+        <servlet-class>mg.coop.servlet.taxi.TaxiBrousseServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>TaxiServlet</servlet-name>
-        <url-pattern>/taxi/*</url-pattern>
-    </servlet-mapping>
-
-    <!-- Servlet Recherche Voiture -->
-    <servlet>
-        <servlet-name>RechercheVoitureServlet</servlet-name>
-        <servlet-class>mg.coop.servlet.taxi.RechercheVoitureServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>RechercheVoitureServlet</servlet-name>
-        <url-pattern>/rechercheVoiture/*</url-pattern>
-    </servlet-mapping>
-
-    <!-- Servlet Reservation -->
-    <servlet>
-        <servlet-name>ReservationServlet</servlet-name>
-        <servlet-class>mg.coop.servlet.reservation.ReservationServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>ReservationServlet</servlet-name>
-        <url-pattern>/reservation/*</url-pattern>
-    </servlet-mapping>
-    <!-- Servlet Trajet -->
-    <servlet>
-        <servlet-name>TrajetServlet</servlet-name>
-        <servlet-class>mg.coop.servlet.trajet.TrajetServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TrajetServlet</servlet-name>
-        <url-pattern>/trajet/*</url-pattern>
-    </servlet-mapping>
-    <!-- Servlet TaxiTrajet -->
-    <servlet>
-        <servlet-name>TaxiTrajetServlet</servlet-name>
-        <servlet-class>mg.coop.servlet.trajet.TaxiTrajetServlet</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>TaxiTrajetServlet</servlet-name>
-        <url-pattern>/taxitrajet/*</url-pattern>
+        <servlet-name>TaxiBrousseServlet</servlet-name>
+        <url-pattern>/taxis/*</url-pattern>
     </servlet-mapping>
 
 </web-app>

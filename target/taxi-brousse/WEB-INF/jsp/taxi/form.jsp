@@ -1,27 +1,51 @@
-<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/index.css">
+<%@ taglib uri="jakarta.tags.core" prefix="c" %>
+<%@ page contentType="text/html; charset=UTF-8" %>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter Taxi</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/sidebar.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/general.css">
+</head>
+<body>
 
 <div class="container">
+    <jsp:include page="/WEB-INF/jsp/components/sidebar.jsp" />
 
-       <jsp:include page="/WEB-INF/jsp/components/sidebar.jsp" />
+    <div class="content">
+        <h2>🚐 Ajouter un Taxi</h2>
 
-       <div class="content">
+        <form method="post" style="max-width: 600px; background: #fff; padding: 30px; border-radius: 8px;">
+            <label>Coopérative <span style="color: red;">*</span></label>
+            <select name="cooperativeId" required>
+                <option value="">-- Sélectionner --</option>
+                <c:forEach items="${cooperatives}" var="coop">
+                    <option value="${coop.id}">${coop.nom}</option>
+                </c:forEach>
+            </select>
 
-              <h2>Taxi Brousse</h2>
+            <label>Type de voiture <span style="color: red;">*</span></label>
+            <select name="typeVoitureId" required>
+                <option value="">-- Sélectionner --</option>
+                <c:forEach items="${typeVoitures}" var="tv">
+                    <option value="${tv.id}">${tv.libelle} (${tv.nbrPlaces} places)</option>
+                </c:forEach>
+            </select>
 
-              <form method="post" action="taxi">
-              <input type="hidden" name="id" value="${taxi.id}"/>
+            <label>Immatriculation <span style="color: red;">*</span></label>
+            <input type="text" name="immatriculation" required placeholder="Ex: 1234 TBA">
 
-              Cooperative ID :
-              <input type="number" name="cooperativeId" value="${taxi.cooperativeId}" required /><br/>
-
-              Type Voiture ID :
-              <input type="number" name="typeVoitureId" value="${taxi.typeVoitureId}" required /><br/>
-
-              Immatriculation :
-              <input type="text" name="immatriculation" value="${taxi.immatriculation}" required /><br/>
-
-              <button type="submit">Enregistrer</button>
-              </form>
-
-       </div>
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button type="submit" style="flex: 1; background: #1abc9c;">✅ Ajouter</button>
+                <a href="${pageContext.request.contextPath}/taxis" 
+                   style="flex: 1; background: #95a5a6; color: white; padding: 10px; text-align: center; border-radius: 4px; text-decoration: none; display: block; line-height: 1.5;">
+                    ❌ Annuler
+                </a>
+            </div>
+        </form>
+    </div>
 </div>
+
+</body>
+</html>

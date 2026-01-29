@@ -1,34 +1,34 @@
 package mg.coop.model;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class Reservation {
     private int id;
-    private int taxiTrajetId;
+
+    private TaxiTrajet taxiTrajet;
+
     private String nomClient;
     private String telephone;
+
     private int nbPlaces;
-    private int nbEnfants;  // NOUVEAU
-    private String statut;
     private LocalDateTime dateReservation;
-    
-    // Informations supplémentaires pour l'affichage (via JOIN)
-    private String depart;
-    private String arrivee;
-    private Timestamp dateHeureDepart;
-    private String immatriculation;
-    private String typeVoiture;
-    private String nomChauffeur;
-    private double prixBase;
-    private double montantPaye;
-    private String modePaiement;
-    private String typePaiement;
+    private String statut;
+    private boolean etat;
 
-    // Constructeurs
-    public Reservation() {}
+    private List<ReservationPlace> places;
 
-    // Getters et Setters
+    public Reservation() {
+    }
+
+    public Reservation(int id, TaxiTrajet taxiTrajet, String nomClient, int nbPlaces, LocalDateTime dateReservation) {
+        this.id = id;
+        this.taxiTrajet = taxiTrajet;
+        this.nomClient = nomClient;
+        this.nbPlaces = nbPlaces;
+        this.dateReservation = dateReservation;
+    }
+
     public int getId() {
         return id;
     }
@@ -37,12 +37,12 @@ public class Reservation {
         this.id = id;
     }
 
-    public int getTaxiTrajetId() {
-        return taxiTrajetId;
+    public TaxiTrajet getTaxiTrajet() {
+        return taxiTrajet;
     }
 
-    public void setTaxiTrajetId(int taxiTrajetId) {
-        this.taxiTrajetId = taxiTrajetId;
+    public void setTaxiTrajet(TaxiTrajet taxiTrajet) {
+        this.taxiTrajet = taxiTrajet;
     }
 
     public String getNomClient() {
@@ -69,12 +69,12 @@ public class Reservation {
         this.nbPlaces = nbPlaces;
     }
 
-    public int getNbEnfants() {
-        return nbEnfants;
+    public LocalDateTime getDateReservation() {
+        return dateReservation;
     }
 
-    public void setNbEnfants(int nbEnfants) {
-        this.nbEnfants = nbEnfants;
+    public void setDateReservation(LocalDateTime dateReservation) {
+        this.dateReservation = dateReservation;
     }
 
     public String getStatut() {
@@ -85,105 +85,19 @@ public class Reservation {
         this.statut = statut;
     }
 
-    public LocalDateTime getDateReservation() {
-        return dateReservation;
+    public List<ReservationPlace> getPlaces() {
+        return places;
     }
 
-    public void setDateReservation(LocalDateTime dateReservation) {
-        this.dateReservation = dateReservation;
+    public void setPlaces(List<ReservationPlace> places) {
+        this.places = places;
     }
 
-    // Nouveaux getters/setters pour les informations supplémentaires
-    public String getDepart() {
-        return depart;
+    public boolean isEtat() {
+        return etat;
     }
 
-    public void setDepart(String depart) {
-        this.depart = depart;
-    }
-
-    public String getArrivee() {
-        return arrivee;
-    }
-
-    public void setArrivee(String arrivee) {
-        this.arrivee = arrivee;
-    }
-
-    public Timestamp getDateHeureDepart() {
-        return dateHeureDepart;
-    }
-
-    public void setDateHeureDepart(Timestamp dateHeureDepart) {
-        this.dateHeureDepart = dateHeureDepart;
-    }
-
-    public String getImmatriculation() {
-        return immatriculation;
-    }
-
-    public void setImmatriculation(String immatriculation) {
-        this.immatriculation = immatriculation;
-    }
-
-    public String getTypeVoiture() {
-        return typeVoiture;
-    }
-
-    public void setTypeVoiture(String typeVoiture) {
-        this.typeVoiture = typeVoiture;
-    }
-
-    public String getNomChauffeur() {
-        return nomChauffeur;
-    }
-
-    public void setNomChauffeur(String nomChauffeur) {
-        this.nomChauffeur = nomChauffeur;
-    }
-
-    public double getPrixBase() {
-        return prixBase;
-    }
-
-    public void setPrixBase(double prixBase) {
-        this.prixBase = prixBase;
-    }
-
-    public double getMontantPaye() {
-        return montantPaye;
-    }
-
-    public void setMontantPaye(double montantPaye) {
-        this.montantPaye = montantPaye;
-    }
-
-    public String getModePaiement() {
-        return modePaiement;
-    }
-
-    public void setModePaiement(String modePaiement) {
-        this.modePaiement = modePaiement;
-    }
-
-    public String getTypePaiement() {
-        return typePaiement;
-    }
-
-    public void setTypePaiement(String typePaiement) {
-        this.typePaiement = typePaiement;
-    }
-
-    // Méthodes utilitaires
-    public double getMontantTotal() {
-        return prixBase * nbPlaces;
-    }
-
-    public double getMontantRestant() {
-        return getMontantTotal() - montantPaye;
-    }
-
-    public void setEtat(boolean boolean1) {
-        throw new UnsupportedOperationException("Unimplemented method 'setEtat'");
+    public void setEtat(boolean etat) {
+        this.etat = etat;
     }
 }

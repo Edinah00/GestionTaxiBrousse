@@ -1,0 +1,113 @@
+body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f6f9;
+    color: #2c3e50;
+}
+/* =====================
+   LISTES (tables)
+   ===================== */
+.table-list {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+.table-list th,
+.table-list td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+}
+
+.table-list th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+}
+
+.table-list tr:nth-child(even) {
+    background-color: #fafafa;
+}
+
+.table-list tr:hover {
+    background-color: #e6f7ff;
+}
+
+/* =====================
+   FORMULAIRES
+   ===================== */
+form {
+    max-width: 600px;
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+    font-size: 14px;
+}
+
+form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="number"],
+form input[type="date"],
+form input[type="datetime-local"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+form textarea {
+    resize: vertical;
+}
+
+form button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+form button:hover {
+    background-color: #0056b3;
+}
+
+/* =====================
+   CONTAINER GLOBAL
+   ===================== */
+.container {
+    display: flex; /* sidebar + content */
+}
+
+.content {
+    margin-left: 240px; /* largeur du sidebar */
+    padding: 20px;
+    flex: 1;
+    box-sizing: border-box;
+}
+
+/* =====================
+   PETITS AJUSTEMENTS
+   ===================== */
+h2, h3 {
+    margin-top: 0;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 3px #007bff;
+}

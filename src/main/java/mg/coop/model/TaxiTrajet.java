@@ -1,136 +1,78 @@
 package mg.coop.model;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class TaxiTrajet {
     private int id;
-    private int taxiId;
-    private String immatriculation;
-    private String typeVoiture;
-    private int nbrPlaces;
-    private int trajetId;
-    private String depart;
-    private String arrivee;
-    private double distanceKm;
-    private double prixBase;
-    private int chauffeurId;
-    private String nomChauffeur;
+    private TaxiBrousse taxi;
+    private Trajet trajet;
+    private Personne chauffeur;
+    private Personne aideChauffeur;
     private LocalDateTime dateHeureDepart;
-    private int placesReservees;
-    private String cooperative;
-    private Integer aideChauffeurId;
-    private String nomAideChauffeur;
-    private double valMax;
-    private double valReel;  // NOUVEAU
-    
+    private double valeurMax;
+    private double CA;
+
+    // Propriétés CA détaillées
+    private double caBillet;
+    private double caPub;
+    private double caPubPaye;      // NOUVEAU
+    private double caPubReste;     // NOUVEAU
+    private double caTotal;
+
+    // Constructeurs
     public TaxiTrajet() {}
-    
-    // Getters et Setters
+
+    public TaxiTrajet(int id, TaxiBrousse taxi, Trajet trajet, Personne chauffeur, 
+                      Personne aideChauffeur, LocalDateTime dateHeureDepart) {
+        this.id = id;
+        this.taxi = taxi;
+        this.trajet = trajet;
+        this.chauffeur = chauffeur;
+        this.aideChauffeur = aideChauffeur;
+        this.dateHeureDepart = dateHeureDepart;
+    }
+
+    // Getters et Setters existants
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }
-    
-    public int getTaxiId() { return taxiId; }
-    public void setTaxiId(int taxiId) { this.taxiId = taxiId; }
-    
-    public String getImmatriculation() { return immatriculation; }
-    public void setImmatriculation(String immatriculation) { 
-        this.immatriculation = immatriculation; 
-    }
-    
-    public String getTypeVoiture() { return typeVoiture; }
-    public void setTypeVoiture(String typeVoiture) { 
-        this.typeVoiture = typeVoiture; 
-    }
-    
-    public int getNbrPlaces() { return nbrPlaces; }
-    public void setNbrPlaces(int nbrPlaces) { 
-        this.nbrPlaces = nbrPlaces; 
-    }
-    
-    public int getTrajetId() { return trajetId; }
-    public void setTrajetId(int trajetId) { this.trajetId = trajetId; }
-    
-    public String getDepart() { return depart; }
-    public void setDepart(String depart) { this.depart = depart; }
-    
-    public String getArrivee() { return arrivee; }
-    public void setArrivee(String arrivee) { this.arrivee = arrivee; }
-    
-    public double getDistanceKm() { return distanceKm; }
-    public void setDistanceKm(double distanceKm) { 
-        this.distanceKm = distanceKm; 
-    }
-    
-    public double getPrixBase() { return prixBase; }
-    public void setPrixBase(double prixBase) { 
-        this.prixBase = prixBase; 
-    }
-    
-    public int getChauffeurId() { return chauffeurId; }
-    public void setChauffeurId(int chauffeurId) { 
-        this.chauffeurId = chauffeurId; 
-    }
-    
-    public String getNomChauffeur() { return nomChauffeur; }
-    public void setNomChauffeur(String nomChauffeur) { 
-        this.nomChauffeur = nomChauffeur; 
-    }
+
+    public TaxiBrousse getTaxi() { return taxi; }
+    public void setTaxi(TaxiBrousse taxi) { this.taxi = taxi; }
+
+    public Trajet getTrajet() { return trajet; }
+    public void setTrajet(Trajet trajet) { this.trajet = trajet; }
+
+    public Personne getChauffeur() { return chauffeur; }
+    public void setChauffeur(Personne chauffeur) { this.chauffeur = chauffeur; }
+
+    public Personne getAideChauffeur() { return aideChauffeur; }
+    public void setAideChauffeur(Personne aideChauffeur) { this.aideChauffeur = aideChauffeur; }
 
     public LocalDateTime getDateHeureDepart() { return dateHeureDepart; }
     public void setDateHeureDepart(LocalDateTime dateHeureDepart) { 
         this.dateHeureDepart = dateHeureDepart; 
     }
-    
-    public int getPlacesReservees() { return placesReservees; }
-    public void setPlacesReservees(int placesReservees) { 
-        this.placesReservees = placesReservees; 
-    }
-    
-    public String getCooperative() { return cooperative; }
-    public void setCooperative(String cooperative) { 
-        this.cooperative = cooperative; 
-    }
-    
-    public int getPlacesDisponibles() {
-        return nbrPlaces - placesReservees;
-    }
-    
-    public Integer getAideChauffeurId() {
-        return aideChauffeurId;
-    }
-    
-    public void setAideChauffeurId(Integer aideChauffeurId) {
-        this.aideChauffeurId = aideChauffeurId;
-    }
-    
-    public String getNomAideChauffeur() {
-        return nomAideChauffeur;
-    }
-    
-    public void setNomAideChauffeur(String nomAideChauffeur) {
-        this.nomAideChauffeur = nomAideChauffeur;
-    }
-    
-    public double getValMax() {
-        return valMax;
-    }
-    
-    public void setValMax(double valMax) {
-        this.valMax = valMax;
-    }
-    
-    public double getValReel() {
-        return valReel;
-    }
-    
-    public void setValReel(double valReel) {
-        this.valReel = valReel;
-    }
-    
-    /**
-     * Calcule le taux de remplissage en valeur (%)
-     */
-    public double getTauxRemplissageValeur() {
-        return valMax > 0 ? (valReel / valMax * 100) : 0;
-    }
+
+    public double getValeurMax() { return valeurMax; }
+    public void setValeurMax(double valeurMax) { this.valeurMax = valeurMax; }
+
+    public double getCA() { return CA; }
+    public void setCA(double cA) { CA = cA; }
+
+    // Getters et setters CA
+    public double getCaBillet() { return caBillet; }
+    public void setCaBillet(double caBillet) { this.caBillet = caBillet; }
+
+    public double getCaPub() { return caPub; }
+    public void setCaPub(double caPub) { this.caPub = caPub; }
+
+    public double getCaPubPaye() { return caPubPaye; }
+    public void setCaPubPaye(double caPubPaye) { this.caPubPaye = caPubPaye; }
+
+    public double getCaPubReste() { return caPubReste; }
+    public void setCaPubReste(double caPubReste) { this.caPubReste = caPubReste; }
+
+    public double getCaTotal() { return caTotal; }
+    public void setCaTotal(double caTotal) { this.caTotal = caTotal; }
 }

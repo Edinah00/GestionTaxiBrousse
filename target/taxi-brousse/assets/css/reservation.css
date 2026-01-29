@@ -1,0 +1,105 @@
+/* ===== Style de la page réservation ===== */
+
+/* Titres */
+/* .content h2 {
+    color: #34495e;
+    font-size: 28px;
+    margin-bottom: 20px;
+} */
+
+/* Messages d'erreur */
+.content p {
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+/* Formulaire */
+.content form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+/* Fieldset */
+.content fieldset {
+    border: 1px solid #ccc;
+    padding: 15px;
+    margin-bottom: 20px;
+    border-radius: 6px;
+}
+
+.content fieldset legend {
+    font-weight: bold;
+    padding: 0 10px;
+}
+
+/* Labels */
+.content label {
+    display: block;
+    margin-top: 10px;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+/* Inputs et selects */
+.content input[type="text"],
+.content input[type="number"],
+.content select {
+    width: 100%;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Boutons */
+.content button {
+    background-color: #3498db;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    margin-top: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.content button:hover {
+    background-color: #2980b9;
+}
+
+/* Bouton supprimer dans les lignes de place */
+.content .removeRow {
+    background-color: #e74c3c;
+    margin-left: 10px;
+}
+
+.content .removeRow:hover {
+    background-color: #c0392b;
+}
+
+/* Ligne de place */
+.content .placeRow {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.content .placeRow label {
+    margin-bottom: 0;
+}
+
+/* Bouton ajouter une place */
+.content #addRow {
+    margin-top: 10px;
+    background-color: #2ecc71;
+}
+
+.content #addRow:hover {
+    background-color: #27ae60;
+}
